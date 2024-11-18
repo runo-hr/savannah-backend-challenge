@@ -46,7 +46,7 @@ jobs:
     - name: Set up virtual environment
       run: |
         python -m venv venv
-        .\venv\Scripts\activate
+        source venv/bin/activate
 
     - name: Install Dependencies
       run: |
