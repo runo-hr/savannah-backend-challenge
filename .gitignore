@@ -1,0 +1,5 @@
+.env
+/orders/migrations/
+/orders/__pycache__/
+
+/orders_system/__pycache__/
