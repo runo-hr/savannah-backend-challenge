@@ -1,0 +1,32 @@
+# Ignore Python cache and bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore environment variables file
+.env
+
+# Ignore virtual environments
+venv/
+.env/
+*.env
+
+# Ignore Django migrations (if generated locally and not needed for builds)
+**/migrations/
+
+# Ignore media and static files (if applicable, you might generate these in production instead)
+media/
+staticfiles/
+
+# Ignore IDE/editor config files
+*.idea
+*.vscode
+*.swp
+
+# Ignore any build artifacts
+build/
+dist/
+*.egg-info/
+
+# Ignore Docker-related files for safety (optional, but useful if they're generated)
+docker-compose.override.yml
