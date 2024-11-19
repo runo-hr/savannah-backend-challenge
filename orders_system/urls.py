@@ -24,5 +24,7 @@ urlpatterns = [
     path('', home, name='home'),  # Add this line to handle the root URL
     path('admin/', admin.site.urls),
     path('orders/', include('orders.urls')),  # Include orders app URLs
+    path('accounts/', include('allauth.urls')),  # Add this line to include allauth URLs for login, logout, etc.
+
 ]
 

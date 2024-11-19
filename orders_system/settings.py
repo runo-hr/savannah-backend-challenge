@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # default django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,10 +39,44 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-     # Other installed apps
-    'orders',
+     # Third-party apps
     'rest_framework',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.openid',
+    
+    # Your app
+    'orders',
 ]
+
+# Add authentication backends
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # default
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# For OpenID Connect
+SOCIALACCOUNT_PROVIDERS = {
+    'openid': {
+        'SCOPE': ['openid', 'profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'offline'},
+        'METHOD': 'oauth2',
+        'OAUTH2_SETTINGS': {
+            'CLIENT_ID': config('AUTH0_CLIENT_ID'),  # Read from .env
+            'SECRET_KEY': config('AUTH0_CLIENT_SECRET'),  # Read from .env
+            'SERVER_URL': f"https://{config('AUTH0_DOMAIN')}",  # Use the domain from .env
+            'AUTHORIZATION_URL': f"https://{config('AUTH0_DOMAIN')}/authorize",
+            'TOKEN_URL': f"https://{config('AUTH0_DOMAIN')}/oauth/token",
+            'USERINFO_URL': f"https://{config('AUTH0_DOMAIN')}/userinfo",
+        }
+    }
+}
+
+LOGIN_REDIRECT_URL = '/'  # Where users should be redirected after login
+LOGOUT_REDIRECT_URL = '/'  # Where users should be redirected after logout
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,7 +112,7 @@ WSGI_APPLICATION = 'orders_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-from decouple import config
+
 
 DATABASES = {
     'default': {
